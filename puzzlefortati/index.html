@@ -1,1 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Happy Birthday, Tati!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#E6EBF3; --surface:#FFFFFF; --tile:#D3DBE8; --tile-text:#1C2541;
+  --ink:#1C2541; --muted:#5A6684; --sel:#1C2541; --sel-text:#FFFFFF;
+  --l0:#FDE47F; --l1:#A8D672; --l2:#8CCBEF; --l3:#C9A6E8; --band-text:#1C2541;
+  --line:#BCC6D8; --focus:#2E5BFF;
+  color-scheme: light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#141A2B; --surface:#1E2740; --tile:#2A3554; --tile-text:#EEF2FA;
+    --ink:#EEF2FA; --muted:#9AA6C4; --sel:#EEF2FA; --sel-text:#141A2B;
+    --line:#36436A; --focus:#8EA8FF; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#141A2B; --surface:#1E2740; --tile:#2A3554; --tile-text:#EEF2FA;
+  --ink:#EEF2FA; --muted:#9AA6C4; --sel:#EEF2FA; --sel-text:#141A2B;
+  --line:#36436A; --focus:#8EA8FF; color-scheme: dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;}
+main{width:100%;max-width:520px;margin:0 auto;padding:24px 14px 40px}
+header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:6px}
+h1{font-size:clamp(2rem,8.5vw,3rem);font-weight:800;letter-spacing:-.03em;margin:0 0 22px;line-height:1.05;text-align:center}
+h1 span{display:inline-block;width:.62em;height:.62em;border-radius:.14em;margin-left:.06em;vertical-align:.04em;
+  background:conic-gradient(var(--l0) 0 25%,var(--l1) 0 50%,var(--l2) 0 75%,var(--l3) 0)}
+#puzzleTitle{color:var(--muted);font-size:.95rem;margin:0}
+.lead{color:var(--muted);margin:0 0 20px;font-size:1rem}
+
+.board{display:grid;gap:8px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.tile{-webkit-appearance:none;appearance:none;border:0;border-radius:8px;background:var(--tile);color:var(--tile-text);
+  font:inherit;font-weight:700;text-transform:uppercase;letter-spacing:0;line-height:1.1;
+  min-width:0;width:100%;height:clamp(64px,19vw,80px);padding:4px;cursor:pointer;
+  font-size:clamp(.78rem,3.6vw,1rem);
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  overflow-wrap:anywhere;-webkit-tap-highlight-color:transparent;touch-action:manipulation;
+  transition:transform .12s ease, background .12s ease}
+.tile.long{font-size:clamp(.62rem,2.8vw,.82rem)}
+.tile.xlong{font-size:clamp(.56rem,2.35vw,.78rem)}
+@media (max-width:350px){.tile{padding:2px}.tile.long{font-size:.56rem}.tile.xlong{font-size:.5rem}}
+@media (hover:hover){.tile:hover{transform:translateY(-1px)}}
+.tile[aria-pressed="true"]{background:var(--sel);color:var(--sel-text)}
+.tile:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.tile.hop{animation:hop .28s ease}
+.grid.shake{animation:shake .4s ease}
+@keyframes hop{50%{transform:translateY(-8px)}}
+@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+
+.band{border-radius:10px;padding:14px 10px;text-align:center;color:var(--band-text);animation:pop .3s ease}
+.band strong{display:block;font-weight:800;font-size:1.05rem}
+.band span{text-transform:uppercase;font-size:.95rem}
+.lv0{background:var(--l0)}.lv1{background:var(--l1)}.lv2{background:var(--l2)}.lv3{background:var(--l3)}
+@keyframes pop{from{transform:scale(.96);opacity:.4}}
+
+.status{display:flex;align-items:center;justify-content:center;gap:10px;margin:18px 0 14px;color:var(--muted)}
+.dots{display:flex;gap:6px}
+.dot{width:12px;height:12px;border-radius:50%;background:var(--ink);transition:opacity .2s, transform .2s}
+.dot.used{opacity:.15;transform:scale(.7)}
+
+.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.btn{appearance:none;font:inherit;font-weight:600;font-size:.95rem;border-radius:999px;padding:11px 20px;cursor:pointer;
+  border:2px solid var(--ink);background:transparent;color:var(--ink)}
+.btn.primary{background:var(--ink);color:var(--bg)}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+
+.toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 18px);transform:translate(-50%,-20px);
+  background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;font-weight:600;opacity:0;pointer-events:none;
+  transition:opacity .2s, transform .2s;z-index:20}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+.result{margin-top:22px;text-align:center;display:none}
+.result.show{display:block}
+.result .crown{font-size:4.5rem;line-height:1;margin-bottom:10px}
+.result h2{margin:0 0 10px;font-size:1.6rem;letter-spacing:-.02em;line-height:1.2}
+.result .sub{color:var(--muted);font-size:1rem;margin:0 auto 4px;max-width:36ch}
+.result .tagline{font-size:1.15rem;font-weight:400;margin:-4px 0 12px}
+.result .tagline:empty{display:none}
+.result pre{font-family:inherit;font-size:1.4rem;line-height:1.15;margin:10px 0 16px}
+
+details{margin-top:36px;border-top:1px solid var(--line);padding-top:16px}
+summary{cursor:pointer;font-weight:600;font-size:1.05rem}
+.editor p{color:var(--muted);margin:10px 0 14px}
+fieldset{border:0;margin:0 0 12px;padding:10px;border-radius:10px}
+fieldset legend{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:6px}
+input{font:inherit;width:100%;padding:9px 10px;border-radius:7px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+input.cat{font-weight:600}
+.row input{text-transform:uppercase;font-size:.85rem}
+.edit-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.load{display:flex;gap:8px;margin-top:16px}
+.load input{flex:1}
+.err{color:#C0392B;font-weight:600;min-height:1.3em;margin:8px 0 0}
+@media (max-width:420px){.row{grid-template-columns:repeat(2,1fr)}.actions{gap:8px}.btn{padding:9px 14px;font-size:.88rem}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+  <h1>Happy Birthday, Tati!</h1>
+
+  <div class="board" id="board" aria-live="polite"></div>
+
+  <div class="status">Mistakes left <div class="dots" id="dots" aria-label="Mistakes left"></div></div>
+
+  <div class="actions" id="actions">
+    <button class="btn" id="shuffleBtn">Shuffle</button>
+    <button class="btn" id="clearBtn" disabled>Deselect all</button>
+    <button class="btn primary" id="submitBtn" disabled>Submit</button>
+  </div>
+
+  <section class="result" id="result">
+    <div class="crown" aria-hidden="true">👸🏻</div>
+    <h2 id="resultTitle"></h2>
+    <p class="tagline" id="resultTag"></p>
+    <p class="sub" id="resultSub"></p>
+    <pre id="resultGrid" aria-label="Your guesses"></pre>
+    <div class="actions">
+      <button class="btn" id="shareBtn">Copy results</button>
+    </div>
+  </section>
+
+</main>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const DEFAULT_PUZZLE = {
+  title: "For Tati",
+  groups: [
+    { name: "Sweet treats", words: ["PANDA PUFFS","COCOA CHIMPS","HONEY STICK","BARIS"] },
+    { name: "Some pet-peeves for Tati", words: ["LEAF BLOWERS","WET FLOORS","NO-SHOW SOCKS","LINE CULTURE"] },
+    { name: "Natural cleaning brands, in disguise", words: ["METHOD MAN","MEYER LEMON","SILENT GENERATION","ECOSYSTEM"] },
+    { name: "Dairy milk alternatives, minus the first letter", words: ["OY","AT","LAX","ICE"] }
+  ]
+};
+const EMOJI = ["🟨","🟩","🟦","🟪"];
+const MAX_MISTAKES = 4;
+
+let puzzle, remaining, selected, solved, mistakes, guesses, guessKeys, over, levelOf;
+const $ = id => document.getElementById(id);
+
+function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+
+function start(p){
+  puzzle = p;
+  levelOf = {};
+  p.groups.forEach((g,i)=>g.words.forEach(w=>levelOf[w]=i));
+  remaining = shuffle(p.groups.flatMap(g=>g.words));
+  selected = new Set(); solved = []; mistakes = 0; guesses = []; guessKeys = new Set(); over = false;
+  $("result").classList.remove("show");
+  $("actions").style.display = "";
+  render();
+}
+
+function render(){
+  const board = $("board");
+  board.innerHTML = "";
+  solved.forEach(i=>{
+    const g = puzzle.groups[i];
+    const d = document.createElement("div");
+    d.className = "band lv"+i;
+    d.innerHTML = `<strong></strong><span></span>`;
+    d.querySelector("strong").textContent = g.name;
+    d.querySelector("span").textContent = g.words.join(", ");
+    board.appendChild(d);
+  });
+  if(remaining.length){
+    const grid = document.createElement("div");
+    grid.className = "grid"; grid.id = "grid";
+    remaining.forEach(w=>{
+      const b = document.createElement("button");
+      const longest = Math.max(...w.split(/[\s-]/).map(t=>t.length));
+      b.className = "tile" + (longest >= 10 ? " xlong" : w.length > 7 ? " long" : "");
+      b.textContent = w;
+      b.setAttribute("aria-pressed", selected.has(w));
+      b.disabled = over;
+      b.onclick = ()=>toggle(w);
+      grid.appendChild(b);
+    });
+    board.appendChild(grid);
+  }
+  $("dots").innerHTML = Array.from({length:MAX_MISTAKES},(_,i)=>
+    `<span class="dot${i < mistakes ? " used":""}"></span>`).join("");
+  $("dots").setAttribute("aria-label", `${MAX_MISTAKES-mistakes} mistakes left`);
+  $("submitBtn").disabled = selected.size !== 4 || over;
+  $("clearBtn").disabled = selected.size === 0 || over;
+  $("shuffleBtn").disabled = over;
+}
+
+function toggle(w){
+  if(over) return;
+  if(selected.has(w)) selected.delete(w);
+  else if(selected.size < 4) selected.add(w);
+  render();
+}
+
+function toast(msg, ms=1600){
+  const t = $("toast"); t.textContent = msg; t.classList.add("show");
+  clearTimeout(t._h); t._h = setTimeout(()=>t.classList.remove("show"), ms);
+}
+
+const wait = ms => new Promise(r=>setTimeout(r,ms));
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+async function submit(){
+  if(selected.size !== 4 || over) return;
+  const pick = [...selected];
+  const key = pick.slice().sort().join("|");
+  if(guessKeys.has(key)){ toast("Already guessed"); return; }
+  guessKeys.add(key);
+  guesses.push(pick.map(w=>levelOf[w]));
+
+  // hop animation on selected tiles
+  if(!reduced){
+    const tiles = [...document.querySelectorAll(".tile")].filter(t=>selected.has(t.textContent));
+    for(const t of tiles){ t.classList.add("hop"); await wait(90); }
+    await wait(250);
+  }
+
+  const counts = [0,0,0,0];
+  pick.forEach(w=>counts[levelOf[w]]++);
+  const hit = counts.findIndex(c=>c===4);
+
+  if(hit >= 0){
+    solved.push(hit);
+    remaining = remaining.filter(w=>!selected.has(w));
+    selected.clear();
+    render();
+    if(solved.length === 4) finish(true);
+  } else {
+    mistakes++;
+    if(Math.max(...counts) === 3) toast("One away");
+    const grid = $("grid");
+    if(grid && !reduced){ grid.classList.add("shake"); await wait(400); }
+    render();
+    if(mistakes >= MAX_MISTAKES){
+      over = true; selected.clear(); render();
+      await wait(600);
+      for(let i=0;i<4;i++){
+        if(solved.includes(i)) continue;
+        solved.push(i);
+        remaining = remaining.filter(w=>levelOf[w]!==i);
+        render();
+        await wait(reduced ? 0 : 700);
+      }
+      finish(false);
+    }
+  }
+}
+
+function resultText(){
+  return guesses.map(g=>g.map(l=>EMOJI[l]).join("")).join("\n");
+}
+
+function finish(won){
+  over = true;
+  render();
+  $("actions").style.display = "none";
+  document.querySelector(".status").style.display = "none";
+  const perfect = won && mistakes === 0;
+  $("resultTitle").textContent = perfect ? "Perfect!" : "The puzzle queen strikes again.";
+  $("resultTag").textContent = perfect ? "Why you wear the crown." : "";
+  $("resultSub").textContent = "Please check the kitchen cabinet, to the right of the oat milk inventory.";
+  $("resultGrid").textContent = resultText();
+  $("result").classList.add("show");
+}
+
+async function copy(text, okMsg){
+  try { await navigator.clipboard.writeText(text); toast(okMsg); }
+  catch(e){ window.prompt("Copy this:", text); }
+}
+
+/* Puzzle editor removed for this version.
+function buildEditor(){
+  const wrap = $("editFields");
+  wrap.innerHTML = "";
+  for(let i=0;i<4;i++){
+    const fs = document.createElement("fieldset");
+    fs.className = "lv"+i;
+    fs.innerHTML = `<legend>Group ${i+1}</legend>
+      <input class="cat" data-g="${i}" placeholder="Group ${i+1} category" aria-label="Group ${i+1} category">
+      <div class="row">${[0,1,2,3].map(j=>
+        `<input data-g="${i}" data-w="${j}" placeholder="Word" aria-label="Group ${i+1} word ${j+1}">`).join("")}</div>`;
+    wrap.appendChild(fs);
+  }
+}
+
+function readEditor(){
+  const groups = [0,1,2,3].map(i=>({
+    name: document.querySelector(`input.cat[data-g="${i}"]`).value.trim(),
+    words: [0,1,2,3].map(j=>document.querySelector(`input[data-g="${i}"][data-w="${j}"]`).value.trim().toUpperCase())
+  }));
+  const all = groups.flatMap(g=>g.words);
+  if(groups.some(g=>!g.name)) return {err:"Give every group a category."};
+  if(all.some(w=>!w)) return {err:"Fill in all 16 words."};
+  if(new Set(all).size !== 16) return {err:"Each word can only appear once."};
+  return {puzzle:{title:"Custom puzzle", groups}};
+}
+
+const encode = p => btoa(unescape(encodeURIComponent(JSON.stringify(p))));
+function decode(code){
+  const p = JSON.parse(decodeURIComponent(escape(atob(code.trim()))));
+  const all = p.groups.flatMap(g=>g.words);
+  if(p.groups.length!==4 || all.length!==16 || new Set(all).size!==16) throw new Error("bad");
+  return p;
+}
+
+$("playCustomBtn").onclick = ()=>{
+  const r = readEditor(); $("editErr").textContent = r.err || "";
+  if(r.puzzle){ start(r.puzzle); window.scrollTo({top:0, behavior: reduced ? "auto" : "smooth"}); }
+};
+$("copyCodeBtn").onclick = ()=>{
+  const r = readEditor(); $("editErr").textContent = r.err || "";
+  if(r.puzzle) copy(encode(r.puzzle), "Puzzle code copied");
+};
+$("loadBtn").onclick = ()=>{
+  try { start(decode($("codeInput").value)); $("editErr").textContent = ""; window.scrollTo({top:0}); }
+  catch(e){ $("editErr").textContent = "That code isn't valid. Check it was copied in full."; }
+};
+
+*/
+$("shuffleBtn").onclick = ()=>{ shuffle(remaining); render(); };
+$("clearBtn").onclick = ()=>{ selected.clear(); render(); };
+$("submitBtn").onclick = submit;
+$("shareBtn").onclick = ()=>copy(`Happy Birthday, Tati!\n${resultText()}`, "Results copied");
+
+start(DEFAULT_PUZZLE);
+</script>
+</body>
+</html>
 
