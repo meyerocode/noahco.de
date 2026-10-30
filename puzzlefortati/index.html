@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f3f1e6; --surface:#FFFFFF; --tile:#D3DBE8; --tile-text:#1C2541;
+  --bg:#F3F1E6; --surface:#FFFFFF; --tile:#CFD4E8; --tile-text:#1C2541;
   --ink:#1C2541; --muted:#5A6684; --sel:#1C2541; --sel-text:#FFFFFF;
   --l0:#FDE47F; --l1:#A8D672; --l2:#8CCBEF; --l3:#C9A6E8; --band-text:#1C2541;
   --line:#BCC6D8; --focus:#2E5BFF;
@@ -34,6 +34,9 @@
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--ink);
+  display:flex;flex-direction:column;justify-content:center;
+  min-height:calc(100vh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));
+  min-height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));
   font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;}
 main{width:100%;max-width:520px;margin:0 auto;padding:24px 14px 40px}
 header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:6px}
@@ -274,7 +277,7 @@ function finish(won){
   $("actions").style.display = "none";
   document.querySelector(".status").style.display = "none";
   const perfect = won && mistakes === 0;
-  $("resultTitle").textContent = perfect ? "Perfect!" : "The puzzle queen strikes again.";
+  $("resultTitle").textContent = perfect ? "Perfect!" : won ? "The puzzle queen strikes again." : "Oy.";
   $("resultTag").textContent = perfect ? "Why you wear the crown." : "";
   $("resultSub").textContent = "Please check the kitchen cabinet, to the right of the oat milk inventory.";
   $("resultGrid").textContent = resultText();
@@ -344,4 +347,3 @@ start(DEFAULT_PUZZLE);
 </script>
 </body>
 </html>
-
